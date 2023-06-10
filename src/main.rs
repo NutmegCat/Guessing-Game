@@ -1,3 +1,4 @@
+guess-secret-number
 use std::io; // standard library crate
 use rand::Rng; // imported crate for random number generation
 use std::cmp::Ordering; // standard library crate for comparison
