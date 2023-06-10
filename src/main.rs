@@ -1,29 +1,35 @@
-use std::io;
-use rand::Rng;
-use std::cmp::Ordering;
+use std::io; // standard library crate
+use rand::Rng; // imported crate for random number generation
+use std::cmp::Ordering; // standard library crate for comparison
 
 fn main() {
     println!("\nGuess the number!");
 
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    let secret_number = rand::thread_rng().gen_range(1..=100); // generate a random number between 1 and 100
 
-    println!("The secret number is: {}", secret_number);
+    loop {
+        println!("\nPlease input your guess.");
 
-    println!("\nPlease input your guess.");
+        let mut guess = String::new();
 
-    let mut guess = String::new();
+        io::stdin() // standard library crate for input
+            .read_line(&mut guess)
+            .expect("\nFailed to read line");
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("\nFailed to read line");
-
-    let guess: u32 = guess.trim().parse().expect("Please type a number!");
+        let guess: u32 = match guess.trim().parse(){ // convert string to u32
+            Ok(num) => num,
+            Err(_) => continue,
+        };
     
-    println!("\nYou guessed: {guess}\n");
+        println!("\nYou guessed: {guess}\n");
  
-    match guess.cmp(&secret_number) {
-        Ordering::Less => println!("Too small!\n"),
-        Ordering::Greater => println!("Too big!\n"),
-        Ordering::Equal => println!("You win!\n"),
+        match guess.cmp(&secret_number) { // compare guess with secret number
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => {
+                println!("You win!\n"); // print win message    
+                break;
+            }
+        }
     }
 }
